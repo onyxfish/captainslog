@@ -5,6 +5,14 @@
     <h1>Captain's Log</h1>
     
     <div id="rail">
+    Source:
+    <ul name='source'>
+        <li class='facet ${ 'selected' if selected_source == 'All' else '' }'>All</li>
+        % for source in sources:
+        <li class="facet ${ 'selected' if selected_source == source else '' }">${ source }</li>
+        % endfor
+    </ul>
+    
     Date range:
     <ul name='when'>
         <li class='facet ${ 'selected' if selected_when == 'All' else '' }'>All</li>

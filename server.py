@@ -19,8 +19,13 @@ class CaptainsLog:
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
     @cherrypy.expose
-    def index(self, when='Today', host='All', path='All', statuscode='All'):
+    def index(self, source='All', when='Today', host='All', path='All', statuscode='All'):
         q = {}
+
+        if source == 'All':
+            pass
+        else:
+            q['source'] = source
         
         if when == 'Today':
             today = datetime.combine(date.today(), time())
@@ -45,6 +50,7 @@ class CaptainsLog:
             q['statuscode'] = statuscode
             
         events = self.apache_access_collection.find(q)
+        sources = events.distinct('source')
         hosts = events.distinct('host')
         paths = events.distinct('path')
         statuscodes = events.distinct('statuscode')
@@ -52,6 +58,8 @@ class CaptainsLog:
         t = self.templates.get_template('index.html')
     
         return t.render(
+            selected_source=source,
+            sources=sources,
             selected_when=when,
             hosts=hosts,
             selected_host=host,
