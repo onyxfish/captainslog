@@ -1,6 +1,57 @@
-<ul>
-% for event in events:
-<li>${ event['when'] } - ${ event['path'] }</li>
-% endfor
-</ul>
-Total: ${total}
+<head>
+    <title>Captain's Log</title>
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
+    <script type='text/javascript'>
+    var q = {'when': 'Today'};
+    
+    function update_view() {
+        //TODO
+    }
+    
+    $(document).ready(function () {
+        $('.facet').click(function() {
+            q[$(this).parent().attr('name')] = $(this).text();
+            
+            update_view();
+        });
+    })
+    </script>
+</head>
+<body>
+    <h1>Captain's Log</h1>
+    
+    Date range:
+    <ul name='when'>
+        <li class='facet'>All</li>
+        <li class='facet'>Today</li>
+        <li class='facet'>This Week</li>
+        <li class='facet'>This Month</li>
+        <li class='facet'>This Year</li>
+    </ul>
+    
+    Host:
+    <ul name='host'>
+        <li class='facet'>All</li>
+        % for host in hosts:
+        <li class='facet'>${ host }</li>
+        % endfor
+    </ul>
+    
+    Path:
+    <ul name='path'>
+        <li class='facet'>All</li>
+        % for path in paths:
+        <li class='facet'>${ path }</li>
+        % endfor
+    </ul>
+    
+    Status Code:
+    <ul name='statuscode'>
+        <li class='facet'>All</li>
+        % for statuscode in statuscodes:
+        <li class='facet'>${ statuscode }</li>
+        % endfor
+    </ul>
+
+
+</body>

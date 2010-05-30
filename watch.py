@@ -12,6 +12,7 @@ LOG_PATH = '/var/log/apache2/access_log'
 mongo = pymongo.Connection()
 db = mongo['captainslog']
 collection = db['apache']
+collection.ensureIndex({'host':1, 'when':-1, 'path': 1, 'statuscode': 1});
 
 f = open(LOG_PATH, 'r')
 size = os.stat(LOG_PATH)[6]
