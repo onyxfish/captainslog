@@ -33,8 +33,6 @@ while 1:
             doc['bytes'] = 0
         else:
             doc['bytes'] = int(doc['bytes'])
-            
-        doc['statuscode'] = int(doc['statuscode'])
 
         print collection.insert(doc)
         

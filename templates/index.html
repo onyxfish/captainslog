@@ -1,11 +1,72 @@
 <head>
     <title>Captain's Log</title>
+</head>
+<body>
+    <h1>Captain's Log</h1>
+    
+    <div id="rail">
+    Date range:
+    <ul name='when'>
+        <li class='facet ${ 'selected' if selected_when == 'All' else '' }'>All</li>
+        <li class='facet ${ 'selected' if selected_when == 'Today' else '' }'>Today</li>
+        <li class='facet ${ 'selected' if selected_when == 'This Week' else '' }'>This Week</li>
+        <li class='facet ${ 'selected' if selected_when == 'This Month' else '' }'>This Month</li>
+        <li class='facet ${ 'selected' if selected_when == 'This Year' else '' }'>This Year</li>
+    </ul>
+    
+    Host:
+    <ul name='host'>
+        <li class='facet'>All</li>
+        % for host in hosts:
+        <li class="facet ${ 'selected' if selected_host == host else '' }">${ host }</li>
+        % endfor
+    </ul>
+    
+    Path:
+    <ul name='path'>
+        <li class='facet'>All</li>
+        % for path in paths:
+        <li class='facet ${ 'selected' if selected_path == path else '' }'>${ path }</li>
+        % endfor
+    </ul>
+    
+    Status Code:
+    <ul name='statuscode'>
+        <li class='facet'>All</li>
+        % for statuscode in statuscodes:
+        <li class='facet ${ 'selected' if selected_statuscode == statuscode else '' }'>${ statuscode }</li>
+        % endfor
+    </ul>
+    </div>
+    
+    <div id="content">
+        <ul>
+        % for event in events:
+        <li class='event'>${ event['when'] }</li>
+        % endfor
+        </ul>
+    </body>
+
+    <link rel="stylesheet" type="text/css" href="assets/captainslog.css" />
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
     <script type='text/javascript'>
-    var q = {'when': 'Today'};
+    var q = {
+        'when': ${ 'null' if not selected_when else "'" + selected_when + "'" },
+        'host': ${ 'null' if not selected_host else "'" + selected_host + "'" },
+        'path': ${ 'null' if not selected_path else "'" + selected_path + "'" },
+        'statuscode': ${ 'null' if not selected_statuscode else "'" + selected_statuscode + "'" }
+        };
     
     function update_view() {
-        //TODO
+        params = new Array();
+        
+        for (var i in q) {
+            if (q[i] != null)    {
+                params.push(i + '=' + q[i]);
+            }
+        }
+        
+        window.location.href = '?' + params.join('&')
     }
     
     $(document).ready(function () {
@@ -16,42 +77,4 @@
         });
     })
     </script>
-</head>
-<body>
-    <h1>Captain's Log</h1>
-    
-    Date range:
-    <ul name='when'>
-        <li class='facet'>All</li>
-        <li class='facet'>Today</li>
-        <li class='facet'>This Week</li>
-        <li class='facet'>This Month</li>
-        <li class='facet'>This Year</li>
-    </ul>
-    
-    Host:
-    <ul name='host'>
-        <li class='facet'>All</li>
-        % for host in hosts:
-        <li class='facet'>${ host }</li>
-        % endfor
-    </ul>
-    
-    Path:
-    <ul name='path'>
-        <li class='facet'>All</li>
-        % for path in paths:
-        <li class='facet'>${ path }</li>
-        % endfor
-    </ul>
-    
-    Status Code:
-    <ul name='statuscode'>
-        <li class='facet'>All</li>
-        % for statuscode in statuscodes:
-        <li class='facet'>${ statuscode }</li>
-        % endfor
-    </ul>
-
-
 </body>

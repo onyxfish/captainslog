@@ -1,0 +1,4 @@
+div#rail {float:left; width:200px;}
+li.facet.selected {background-color:red;}
+
+div#content {float:left;}
