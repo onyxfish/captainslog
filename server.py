@@ -5,23 +5,23 @@ from mako.lookup import TemplateLookup
 from mako.template import Template
 import pymongo
 
+MONGO_DB = 'captainslog'
+APACHE_ACCESS_COLLECTION = 'apache_access'
+LOG_COLLECTION = 'logs'
+
 class CaptainsLog:
     def __init__(self):
         self.mongo = pymongo.Connection()
-        self.db = self.mongo['captainslog']
-        self.collection = self.db['apache']
+        self.db = self.mongo[MONGO_DB]
+        self.apache_access_collection = self.db[APACHE_ACCESS_COLLECTION]
+        self.log_collection = self.db[LOG_COLLECTION]
         
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
     @cherrypy.expose
-    def index(self, when='Today', host=None, path=None, statuscode=None):
-        # NCSA format: host rfc931 username date:time request statuscode bytes
-        hosts = self.collection.distinct('host')
-        paths = self.collection.distinct('path')
-        statuscodes = self.collection.distinct('statuscode')
-    
+    def index(self, when='Today', host='All', path='All', statuscode='All'):
         q = {}
-
+        
         if when == 'Today':
             today = datetime.combine(date.today(), time())
             q['when'] = { '$gt': today }
@@ -29,16 +29,25 @@ class CaptainsLog:
             # TODO
             pass
 
-        if host:
+        if host == 'All':
+            pass
+        else:
             q['host'] = host
 
-        if path:
+        if path == 'All':
+            pass
+        else:
             q['path'] = path
 
-        if statuscode:
+        if statuscode == 'All':
+            pass
+        else:
             q['statuscode'] = statuscode
             
-        events = self.collection.find(q)
+        events = self.apache_access_collection.find(q)
+        hosts = events.distinct('host')
+        paths = events.distinct('path')
+        statuscodes = events.distinct('statuscode')
         
         t = self.templates.get_template('index.html')
     

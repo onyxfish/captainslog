@@ -16,7 +16,7 @@
     
     Host:
     <ul name='host'>
-        <li class='facet'>All</li>
+        <li class='facet ${ 'selected' if selected_host == 'All' else '' }'>All</li>
         % for host in hosts:
         <li class="facet ${ 'selected' if selected_host == host else '' }">${ host }</li>
         % endfor
@@ -24,7 +24,7 @@
     
     Path:
     <ul name='path'>
-        <li class='facet'>All</li>
+        <li class='facet ${ 'selected' if selected_path == 'All' else '' }'>All</li>
         % for path in paths:
         <li class='facet ${ 'selected' if selected_path == path else '' }'>${ path }</li>
         % endfor
@@ -32,7 +32,7 @@
     
     Status Code:
     <ul name='statuscode'>
-        <li class='facet'>All</li>
+        <li class='facet ${ 'selected' if selected_statuscode == 'All' else '' }'>All</li>
         % for statuscode in statuscodes:
         <li class='facet ${ 'selected' if selected_statuscode == statuscode else '' }'>${ statuscode }</li>
         % endfor
@@ -51,19 +51,17 @@
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
     <script type='text/javascript'>
     var q = {
-        'when': ${ 'null' if not selected_when else "'" + selected_when + "'" },
-        'host': ${ 'null' if not selected_host else "'" + selected_host + "'" },
-        'path': ${ 'null' if not selected_path else "'" + selected_path + "'" },
-        'statuscode': ${ 'null' if not selected_statuscode else "'" + selected_statuscode + "'" }
+        'when': '${ selected_when }',
+        'host': '${ selected_host }',
+        'path': '${ selected_path }',
+        'statuscode': '${ selected_statuscode }'
         };
     
     function update_view() {
         params = new Array();
         
         for (var i in q) {
-            if (q[i] != null)    {
-                params.push(i + '=' + q[i]);
-            }
+            params.push(i + '=' + q[i]);
         }
         
         window.location.href = '?' + params.join('&')
