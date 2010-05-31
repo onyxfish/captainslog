@@ -27,7 +27,7 @@ class CaptainsLog:
         
         if when == 'Today':
             today = datetime.combine(date.today(), time())
-            q['when'] = { '$gt': today }
+            q['datetime'] = { '$gt': today }
         else:
             # TODO
             pass

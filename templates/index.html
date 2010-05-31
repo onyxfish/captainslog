@@ -53,8 +53,8 @@
         <tr>
             <th><a href="javascript:update_view(null,'source')">Source<a/></th>
             <th><a href="javascript:update_view(null,'host')">Host</th>
-            <th><a href="javascript:update_view(null,'rfc931')">RFC931</th>
-            <th><a href="javascript:update_view(null,'username')">Username</th>
+            <th><a href="javascript:update_view(null,'rfc931')">Remote Log</th>
+            <th><a href="javascript:update_view(null,'username')">Auth User</th>
             <th><a href="javascript:update_view(null,'when')">Datetime</th>
             <th><a href="javascript:update_view(null,'verb')">Verb</th>
             <th><a href="javascript:update_view(null,'path')">Path</th>
@@ -68,9 +68,9 @@
         <tr>
             <td>${ event['source'] }</td>
             <td>${ event['host'] }</td>
-            <td>${ event['rfc931'] }</td>
-            <td>${ event['username'] }</td>
-            <td>${ event['when'] }</td>
+            <td>${ event['remote_log'] }</td>
+            <td>${ event['auth_user'] }</td>
+            <td>${ event['datetime'] }</td>
             <td>${ event['verb'] }</td>
             <td>${ event['path'] }</td>
             <td>${ event['protocol'] }</td>

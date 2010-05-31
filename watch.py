@@ -5,10 +5,10 @@ import time
 
 import pymongo
 
+import logformat
 import settings
 
-# CLF format: host rfc931 username date:time request statuscode bytes
-CLF_REGEX = re.compile('^(?P<host>[\d:\.]+)\s(?P<rfc931>.+)\s(?P<username>.+)\s\[(?P<when>.*)\]\s"(?P<verb>.*)\s(?P<path>.*)\s(?P<protocol>.*)"\s(?P<statuscode>[\d-]+)\s(?P<bytes>[\d-]+)$')
+CLF_REGEX = re.compile(logformat.generate_format_regex('CLF'))
 
 mongo = pymongo.Connection()
 db = mongo[settings.MONGO_DB]
@@ -17,7 +17,7 @@ log_collection = db[settings.LOG_COLLECTION]
 
 apache_access_collection.ensure_index([
     ('host', pymongo.ASCENDING),
-    ('when', pymongo.DESCENDING),
+    ('datetime', pymongo.DESCENDING),
     ('path', pymongo.ASCENDING), 
     ('statuscode', pymongo.ASCENDING)
 ]);
@@ -57,14 +57,16 @@ while 1:
             match = CLF_REGEX.match(line)
             doc = match.groupdict()
 
-            # Date format: 28/May/2010:19:41:14 -0500
-            # TODO - fix timezone
-            doc['when'] = datetime.strptime(doc['when'][:-6], '%d/%b/%Y:%H:%M:%S')
+            if 'datetime' in doc:
+                # Date format: 28/May/2010:19:41:14 -0500
+                # TODO - fix timezone
+                doc['datetime'] = datetime.strptime(doc['datetime'][:-6], '%d/%b/%Y:%H:%M:%S')
 
-            if doc['bytes'] == '-':
-                doc['bytes'] = 0
-            else:
-                doc['bytes'] = int(doc['bytes'])
+            if 'bytes' in doc:
+                if doc['bytes'] == '-':
+                    doc['bytes'] = 0
+                else:
+                    doc['bytes'] = int(doc['bytes'])
                 
             doc['source'] = log['path']
 
