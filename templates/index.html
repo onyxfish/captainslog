@@ -51,16 +51,16 @@
         <table id="event-table">
         <thead>
         <tr>
-            <th>Source</th>
-            <th>Host</th>
-            <th>RFC931</th>
-            <th>Username</th>
-            <th>Datetime</th>
-            <th>Verb</th>
-            <th>Path</th>
-            <th>Protocol</th>
-            <th>Statuscode</th>
-            <th>Bytes</th>
+            <th><a href="javascript:update_view(null,'source')">Source<a/></th>
+            <th><a href="javascript:update_view(null,'host')">Host</th>
+            <th><a href="javascript:update_view(null,'rfc931')">RFC931</th>
+            <th><a href="javascript:update_view(null,'username')">Username</th>
+            <th><a href="javascript:update_view(null,'when')">Datetime</th>
+            <th><a href="javascript:update_view(null,'verb')">Verb</th>
+            <th><a href="javascript:update_view(null,'path')">Path</th>
+            <th><a href="javascript:update_view(null,'protocol')">Protocol</th>
+            <th><a href="javascript:update_view(null,'statuscode')">Statuscode</th>
+            <th><a href="javascript:update_view(null,'bytes')">Bytes</th>
         </tr>
         </thead>
         <tbody>
@@ -114,9 +114,13 @@
         return false;
     }
     
-    function update_view(page) {
+    function update_view(page, sort) {
         if (!page) {
             page = 0;
+        }
+        
+        if (!sort) {
+            sort = '${ sort }';
         }
         
         params = new Array();
@@ -126,6 +130,7 @@
         }
         
         params.push('page=' + page)
+        params.push('sort=' + sort)
         
         window.location.href = '?' + params.join('&')
     }
@@ -138,8 +143,6 @@
             
             return false;
         });
-        
-        $("#event-table").tablesorter();
     })
     </script>
 </body>

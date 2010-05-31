@@ -17,7 +17,7 @@ class CaptainsLog:
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
     @cherrypy.expose
-    def index(self, source='All', when='Today', host='All', path='All', statuscode='All', page='0'):
+    def index(self, source='All', when='Today', host='All', path='All', statuscode='All', page='0', sort='when'):
         q = {}
 
         if source == 'All':
@@ -54,9 +54,7 @@ class CaptainsLog:
         paths = events.distinct('path')
         statuscodes = events.distinct('statuscode')
         total_events = events.count()
-        events = events.skip(int(page) * 20).limit(20)
-        
-        print total_events
+        events = events.skip(int(page) * 20).limit(20).sort([(sort, 1)]);
         
         t = self.templates.get_template('index.html')
     
@@ -74,6 +72,7 @@ class CaptainsLog:
             total_events=total_events,
             events=events,
             page=page,
+            sort=sort,
             )
 
 cherrypy.quickstart(CaptainsLog(), '/', 'cherrypy.conf')
