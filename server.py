@@ -7,6 +7,24 @@ import pymongo
 
 import settings
 
+count_map = '''
+function() {
+    emit(this.%s, { count: 1 });
+}
+'''
+
+count_reduce = '''
+function(key, values) {
+    var total = 0;
+
+    for ( var i=0; i< values.length; i++ ) {
+        total += values[i].count;
+    }
+    
+    return { count : total };
+}
+'''
+
 class CaptainsLog:
     def __init__(self):
         self.mongo = pymongo.Connection()
@@ -49,12 +67,14 @@ class CaptainsLog:
             
         events = self.apache_access_collection.find(q)
         whens = ['Today', 'This Week', 'This Month', 'This Year']
-        sources = events.distinct('source')
-        hosts = events.distinct('host')
-        paths = events.distinct('path')
-        statuscodes = events.distinct('statuscode')
+        sources = self.apache_access_collection.map_reduce(count_map % 'source', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
+        hosts = self.apache_access_collection.map_reduce(count_map % 'host', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
+        paths = self.apache_access_collection.map_reduce(count_map % 'path', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
+        statuscodes = self.apache_access_collection.map_reduce(count_map % 'statuscode', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
         total_events = events.count()
         events = events.skip(int(page) * 20).limit(20).sort([(sort, int(sortdir))]);
+        
+        print hosts
         
         t = self.templates.get_template('index.html')
     
