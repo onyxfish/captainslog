@@ -121,6 +121,12 @@
         
         if (!sort) {
             sort = '${ sort }';
+        } else {
+            if (sort == '${ sort }') {
+                sortdir = (${ sortdir } == 1) ? -1 : 1;
+            } else {
+                sortdir = 1;
+            }
         }
         
         params = new Array();
@@ -131,6 +137,7 @@
         
         params.push('page=' + page)
         params.push('sort=' + sort)
+        params.push('sortdir=' + sortdir)
         
         window.location.href = '?' + params.join('&')
     }
