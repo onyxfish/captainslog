@@ -48,11 +48,34 @@
     </div>
     
     <div id="content">
-        <ul>
+        <table>
+        <tr>
+            <th>Source</th>
+            <th>Host</th>
+            <th>RFC931</th>
+            <th>Username</th>
+            <th>Datetime</th>
+            <th>Verb</th>
+            <th>Path</th>
+            <th>Protocol</th>
+            <th>Statuscode</th>
+            <th>Bytes</th>
+        </tr>
         % for event in events:
-        <li class='event'>${ event['when'] }</li>
+        <tr>
+            <td>${ event['source'] }</td>
+            <td>${ event['host'] }</td>
+            <td>${ event['rfc931'] }</td>
+            <td>${ event['username'] }</td>
+            <td>${ event['when'] }</td>
+            <td>${ event['verb'] }</td>
+            <td>${ event['path'] }</td>
+            <td>${ event['protocol'] }</td>
+            <td>${ event['statuscode'] }</td>
+            <td>${ event['bytes'] }</td>
+        </tr>
         % endfor
-        </ul>
+        </table>
     </body>
 
     <link rel="stylesheet" type="text/css" href="assets/captainslog.css" />
