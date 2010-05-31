@@ -7,8 +7,8 @@ import pymongo
 
 import settings
 
-# NCSA format: host rfc931 username date:time request statuscode bytes
-NCSA_REGEX = re.compile('^(?P<host>[\d:\.]+)\s(?P<rfc931>.+)\s(?P<username>.+)\s\[(?P<when>.*)\]\s"(?P<verb>.*)\s(?P<path>.*)\s(?P<protocol>.*)"\s(?P<statuscode>[\d-]+)\s(?P<bytes>[\d-]+)$')
+# CLF format: host rfc931 username date:time request statuscode bytes
+CLF_REGEX = re.compile('^(?P<host>[\d:\.]+)\s(?P<rfc931>.+)\s(?P<username>.+)\s\[(?P<when>.*)\]\s"(?P<verb>.*)\s(?P<path>.*)\s(?P<protocol>.*)"\s(?P<statuscode>[\d-]+)\s(?P<bytes>[\d-]+)$')
 
 mongo = pymongo.Connection()
 db = mongo[settings.MONGO_DB]
@@ -54,7 +54,7 @@ while 1:
         line = f.readline()
     
         while line:
-            match = NCSA_REGEX.match(line)
+            match = CLF_REGEX.match(line)
             doc = match.groupdict()
 
             # Date format: 28/May/2010:19:41:14 -0500
