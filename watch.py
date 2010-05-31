@@ -8,8 +8,6 @@ import pymongo
 import logformat
 import settings
 
-CLF_REGEX = re.compile(logformat.generate_format_regex('CLF'))
-
 mongo = pymongo.Connection()
 db = mongo[settings.MONGO_DB]
 apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
@@ -26,6 +24,9 @@ log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
 
 # TODO: make configurable
 log_paths = ['/var/log/apache2/access_log']
+
+# TODO: load regexes dynamically from config
+CLF_REGEX = re.compile(logformat.get_format_regex('CLF'))
 
 logs = []
 log_files  = {}
