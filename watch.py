@@ -5,17 +5,15 @@ import time
 
 import pymongo
 
-MONGO_DB = 'captainslog'
-APACHE_ACCESS_COLLECTION = 'apache_access'
-LOG_COLLECTION = 'logs'
+import settings
 
 # NCSA format: host rfc931 username date:time request statuscode bytes
 NCSA_REGEX = re.compile('^(?P<host>[\d:\.]+)\s(?P<rfc931>.+)\s(?P<username>.+)\s\[(?P<when>.*)\]\s"(?P<verb>.*)\s(?P<path>.*)\s(?P<protocol>.*)"\s(?P<statuscode>[\d-]+)\s(?P<bytes>[\d-]+)$')
 
 mongo = pymongo.Connection()
-db = mongo[MONGO_DB]
-apache_access_collection = db[APACHE_ACCESS_COLLECTION]
-log_collection = db[LOG_COLLECTION]
+db = mongo[settings.MONGO_DB]
+apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
+log_collection = db[settings.LOG_COLLECTION]
 
 apache_access_collection.ensure_index([
     ('host', pymongo.ASCENDING),

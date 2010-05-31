@@ -5,16 +5,14 @@ from mako.lookup import TemplateLookup
 from mako.template import Template
 import pymongo
 
-MONGO_DB = 'captainslog'
-APACHE_ACCESS_COLLECTION = 'apache_access'
-LOG_COLLECTION = 'logs'
+import settings
 
 class CaptainsLog:
     def __init__(self):
         self.mongo = pymongo.Connection()
-        self.db = self.mongo[MONGO_DB]
-        self.apache_access_collection = self.db[APACHE_ACCESS_COLLECTION]
-        self.log_collection = self.db[LOG_COLLECTION]
+        self.db = self.mongo[settings.MONGO_DB]
+        self.apache_access_collection = self.db[settings.APACHE_ACCESS_COLLECTION]
+        self.log_collection = self.db[settings.LOG_COLLECTION]
         
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
