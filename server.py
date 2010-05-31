@@ -48,17 +48,21 @@ class CaptainsLog:
             q['statuscode'] = statuscode
             
         events = self.apache_access_collection.find(q)
+        whens = ['Today', 'This Week', 'This Month', 'This Year']
         sources = events.distinct('source')
         hosts = events.distinct('host')
         paths = events.distinct('path')
         statuscodes = events.distinct('statuscode')
         events = events.skip(int(page) * 20).limit(20)
         
+        print when
+        
         t = self.templates.get_template('index.html')
     
         return t.render(
-            selected_source=source,
             sources=sources,
+            selected_source=source,
+            whens=whens,
             selected_when=when,
             hosts=hosts,
             selected_host=host,
