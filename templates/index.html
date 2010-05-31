@@ -8,41 +8,41 @@
     <div id="rail" class="grid_2">
     Source:
     <ul name='source'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_source == 'All' else '' }'>All</a></li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_source == 'All' else '' }' title='All'>All</a></li>
         % for source in sources:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_source == source else '' }">${ source }</a></li>
+        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_source == source else '' }" title='${ source }'>${ source }</a></li>
         % endfor
     </ul>
     
     Date range:
     <ul name='when'>
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == 'All' else '' }">All</a></li>
+        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == 'All' else '' }" title='All'>All</a></li>
         % for when in whens:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == when else '' }">${ when }</a></li>
+        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == when else '' }" title='${ when }'>${ when }</a></li>
         % endfor
     </ul>
     
     Host:
     <ul name='host'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_host == 'All' else '' }'>All</a></li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_host == 'All' else '' }' title='All'>All</a></li>
         % for host in hosts:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_host == host else '' }">${ host }</a></li>
+        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_host == host else '' }" title='${ host }'>${ host }</a></li>
         % endfor
     </ul>
     
     Path:
     <ul name='path'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == 'All' else '' }'>All</a></li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == 'All' else '' }' title='All'>All</a></li>
         % for path in paths:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == path else '' }'>${ path }</a></li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == path else '' }' title='${ path }'>${ path }</a></li>
         % endfor
     </ul>
     
     Status Code:
     <ul name='statuscode'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == 'All' else '' }'>All</a></li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == 'All' else '' }' title='All'>All</a></li>
         % for statuscode in statuscodes:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == statuscode else '' }'>${ statuscode }</a></li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == statuscode else '' }' title='${ statuscode }'>${ statuscode }</a></li>
         % endfor
     </ul>
     </div>
