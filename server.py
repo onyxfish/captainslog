@@ -35,7 +35,7 @@ class CaptainsLog:
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
     @cherrypy.expose
-    def index(self, source='All', when='Today', host='All', path='All', statuscode='All', page='0', sort='when', sortdir='1'):
+    def index(self, source='All', when='Today', host='All', path='All', statuscode='All', page='0', sort='datetime', sortdir='1'):
         q = {}
 
         if source == 'All':
