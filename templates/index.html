@@ -80,6 +80,13 @@
         % endfor
         </tbody>
         </table>
+        
+        % if int(page) > 0:
+        <a href="javascript:update_view(${ int(page) - 1 })">Previous</a>
+        % endif
+        % if (int(page) + 1) * 20 < total_events:
+        <a href="javascript:update_view(${ int(page) + 1 })">Next</a>
+        % endif
     </div>
     </body>
 
@@ -107,12 +114,18 @@
         return false;
     }
     
-    function update_view() {
+    function update_view(page) {
+        if (!page) {
+            page = 0;
+        }
+        
         params = new Array();
         
         for (var i in q) {
             params.push(i + '=' + q[i]);
         }
+        
+        params.push('page=' + page)
         
         window.location.href = '?' + params.join('&')
     }

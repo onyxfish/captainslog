@@ -53,9 +53,10 @@ class CaptainsLog:
         hosts = events.distinct('host')
         paths = events.distinct('path')
         statuscodes = events.distinct('statuscode')
+        total_events = events.count()
         events = events.skip(int(page) * 20).limit(20)
         
-        print when
+        print total_events
         
         t = self.templates.get_template('index.html')
     
@@ -70,7 +71,9 @@ class CaptainsLog:
             selected_path=path,
             statuscodes=statuscodes,
             selected_statuscode=statuscode,
+            total_events=total_events,
             events=events,
+            page=page,
             )
 
 cherrypy.quickstart(CaptainsLog(), '/', 'cherrypy.conf')
