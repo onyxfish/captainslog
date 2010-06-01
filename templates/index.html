@@ -10,7 +10,7 @@
     <ul name='source'>
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_source == 'All' else '' }' title='All'>All</a></li>
         % for source in sources:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_source == source else '' }" title='${ source['_id'] }'>${ source['_id'] }</a> (${ int(source['value']['count']) })</li>
+        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_source == source['_id'] else '' }" title='${ source['_id'] }'>${ source['_id'] }</a> (${ int(source['value']['count']) })</li>
         % endfor
     </ul>
     
@@ -26,7 +26,7 @@
     <ul name='host'>
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_host == 'All' else '' }' title='All'>All</a></li>
         % for host in hosts:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_host == host else '' }" title='${ host['_id'] }'>${ host['_id'] }</a> (${ int(host['value']['count']) })</li>
+        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_host == host['_id'] else '' }" title='${ host['_id'] }'>${ host['_id'] }</a> (${ int(host['value']['count']) })</li>
         % endfor
     </ul>
     
@@ -34,7 +34,7 @@
     <ul name='path'>
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == 'All' else '' }' title='All'>All</a></li>
         % for path in paths:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == path else '' }' title='${ path['_id'] }'>${ path['_id'] }</a> (${ int(path['value']['count']) })</li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == path['_id'] else '' }' title='${ path['_id'] }'>${ path['_id'] }</a> (${ int(path['value']['count']) })</li>
         % endfor
     </ul>
     
@@ -42,7 +42,7 @@
     <ul name='statuscode'>
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == 'All' else '' }' title='All'>All</a></li>
         % for statuscode in statuscodes:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == statuscode else '' }' title='${ statuscode['_id'] }'>${ statuscode['_id'] }</a> (${ int(statuscode['value']['count']) })</li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == statuscode['_id'] else '' }' title='${ statuscode['_id'] }'>${ statuscode['_id'] }</a> (${ int(statuscode['value']['count']) })</li>
         % endfor
     </ul>
     </div>
