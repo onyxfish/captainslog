@@ -15,9 +15,8 @@ log_collection = db[settings.LOG_COLLECTION]
 
 apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('source', pymongo.ASCENDING)])
 apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('host', pymongo.ASCENDING)])
-apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('path', pymongo.ASCENDING)])
+# apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('path', pymongo.ASCENDING)])
 apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('statuscode', pymongo.ASCENDING)])
-apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('source', pymongo.ASCENDING)])
 
 log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
 

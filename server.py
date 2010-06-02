@@ -76,6 +76,7 @@ class CaptainsLog:
         whens = ['Today', 'Yesterday']
         sources = self.apache_access_collection.map_reduce(count_map % 'source', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
         total_events = events.count()
+        # TODO: make rows/page configurable
         events = events.skip(int(page) * 20).limit(20).sort([(sort, int(sortdir))]);
         
         t = self.templates.get_template('index.html')
