@@ -35,7 +35,7 @@ class CaptainsLog:
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
     @cherrypy.expose
-    def index(self, page='0', sort='datetime', sortdir='1', **kwargs):
+    def index(self, page='0', **kwargs):
         q = {}
     
         facets = []
@@ -72,8 +72,9 @@ class CaptainsLog:
             
         events = self.apache_access_collection.find(q)
         total_events = events.count()
-        # TODO: make rows/page configurable
-        events = events.skip(int(page) * 20).limit(20).sort([(sort, int(sortdir))]);
+        # TODO: make rows-per-page configurable
+        # NB: natural sort order is correct as datetime is always the 1st indexed column
+        events = events.skip(int(page) * 20).limit(20)
         
         t = self.templates.get_template('index.html')
     
@@ -82,8 +83,6 @@ class CaptainsLog:
             total_events=total_events,
             events=events,
             page=page,
-            sort=sort,
-            sortdir=sortdir,
             )
 
 cherrypy.quickstart(CaptainsLog(), '/', 'cherrypy.conf')

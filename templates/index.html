@@ -24,16 +24,16 @@
         <table id="event-table">
         <thead>
         <tr>
-            <th><a href="javascript:update_view(null,'source')">Source<a/></th>
-            <th><a href="javascript:update_view(null,'host')">Host</th>
-            <th><a href="javascript:update_view(null,'remote_log')">Remote Log</th>
-            <th><a href="javascript:update_view(null,'auth_user')">Auth User</th>
-            <th><a href="javascript:update_view(null,'datetime')">Datetime</th>
-            <th><a href="javascript:update_view(null,'verb')">Verb</th>
-            <th><a href="javascript:update_view(null,'path')">Path</th>
-            <th><a href="javascript:update_view(null,'protocol')">Protocol</th>
-            <th><a href="javascript:update_view(null,'statuscode')">Statuscode</th>
-            <th><a href="javascript:update_view(null,'bytes')">Bytes</th>
+            <th>Source<a/></th>
+            <th>Host</th>
+            <th>Remote Log</th>
+            <th>Auth User</th>
+            <th>Datetime</th>
+            <th>Verb</th>
+            <th>Path</th>
+            <th>Protocol</th>
+            <th>Statuscode</th>
+            <th>Bytes</th>
         </tr>
         </thead>
         <tbody>
@@ -84,20 +84,9 @@
         return false;
     }
     
-    function update_view(page, sort) {
+    function update_view(page) {
         if (!page) {
             page = 0;
-        }
-        
-        if (!sort) {
-            sort = '${ sort }';
-            sortdir = 1;
-        } else {
-            if (sort == '${ sort }') {
-                sortdir = (${ sortdir } == 1) ? -1 : 1;
-            } else {
-                sortdir = 1;
-            }
         }
         
         params = new Array();
@@ -107,8 +96,6 @@
         }
         
         params.push('page=' + page)
-        params.push('sort=' + sort)
-        params.push('sortdir=' + sortdir)
         
         window.location.href = '?' + params.join('&')
     }
