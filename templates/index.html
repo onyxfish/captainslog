@@ -6,26 +6,14 @@
     <h1>Captain's Log</h1>
     
     <div id="rail" class="grid_2">
-    Source:
-    <ul name='source'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_source == 'All' else '' }' title='All'>All</a></li>
-        % for source in sources:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_source == source['_id'] else '' }" title='${ source['_id'] }'>${ source['_id'] }</a> (${ int(source['value']['count']) })</li>
-        % endfor
-    </ul>
-    
-    Date range:
-    <ul name='when'>
-        % for when in whens:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == when else '' }" title='${ when }'>${ when }</a></li>
-        % endfor
-    </ul>
-    
     % for facet in facets:
     ${ facet['label'] }
     <ul name='${ facet['name'] }'>
+		## Special casing for datetime column
+		% if facet['name'] != 'datetime':
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if not facet['selected'] or facet['selected'] == 'All' else '' }' title='All'>All</a></li>
-        % for value in facet['values']:
+        % endif
+		% for value in facet['values']:
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if facet['selected'] == value['_id'] else '' }' title='${ value['_id'] }'>${ value['_id'] }</a> (${ int(value['value']['count']) })</li>
         % endfor
     </ul>
@@ -83,11 +71,9 @@
     <script type='text/javascript' src='assets/tablesorter/jquery.tablesorter.min.js'></script>
     <script type='text/javascript'>
     var q = {
-        'source': '${ selected_source }',
         % for facet in facets:
         '${ facet['name'] }': '${ facet['selected'] }',
         % endfor
-        'when': '${ selected_when }',
         };
         
     function facet_clicked() {    

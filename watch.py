@@ -14,7 +14,7 @@ apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
 log_collection = db[settings.LOG_COLLECTION]
 
 apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('source', pymongo.ASCENDING)])
-apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('host', pymongo.ASCENDING)])
+# apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('host', pymongo.ASCENDING)])
 # apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('path', pymongo.ASCENDING)])
 apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('statuscode', pymongo.ASCENDING)])
 
@@ -22,9 +22,9 @@ log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
 
 # TODO: make configurable
 log_config = {
-    # '/Users/sk/src/captainslog/app1/apps.access.log': 'NCSA',
+    '/Users/sk/src/captainslog/app1/apps.access.log': 'NCSA',
     # '/Users/sk/src/captainslog/app1/Medill.access.log': 'NCSA',
-    '/Users/sk/src/captainslog/app1/homicides.access.log': '\[?%h\]? %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %I %O'
+    # '/Users/sk/src/captainslog/app1/homicides.access.log': '\[?%h\]? %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %I %O'
 }
 
 # TODO: load regexes dynamically from config

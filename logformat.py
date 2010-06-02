@@ -22,6 +22,7 @@ LOG_FORMATS = {
     '%r': '(?P<verb>.+) (?P<path>.+) (?P<protocol>.+)',     # First line of request
     '%>s': '(?P<statuscode>[\d-]+)',    # Status of the last request (after any redirects)
     '%s': '(?P<original_statuscode>[\d-]+)',     # Status.  For requests that got internally redirected, this is the status of the *original* request
+    # TODO: support alternate time formats
     '%t': '\[(?P<datetime>.+)\]',     # Time, in common log format time format (standard english format)
     '%T': '(?P<time_to_serve>\d+)',     # The time taken to serve the request, in seconds.
     '%u': '(?P<auth_user>.+)',     # Remote user (from auth; may be bogus if return status (%s) is 401)

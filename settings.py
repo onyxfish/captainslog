@@ -12,7 +12,9 @@ USER_LOGS = [
 
 # What columns should be faceted for drill-down navigation?
 FACET_COLUMNS = [
-    'host',
+    'source',
+    'datetime',
+    # 'host',
     # 'path',
     'statuscode',
 ]
