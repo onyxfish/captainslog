@@ -13,10 +13,9 @@ db = mongo[settings.MONGO_DB]
 apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
 log_collection = db[settings.LOG_COLLECTION]
 
-apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('source', pymongo.ASCENDING)])
-# apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('host', pymongo.ASCENDING)])
-# apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('path', pymongo.ASCENDING)])
-apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('statuscode', pymongo.ASCENDING)])
+for column in settings.FACET_COLUMNS:
+    if column != 'datetime':
+        apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), (column, pymongo.ASCENDING)])
 
 log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
 
@@ -47,7 +46,6 @@ for path, format in log_config.items():
         log['_id'] = log_collection.insert(log)
     
     regex = logformat.get_format_regex(format)
-    print regex
     regexes[log['_id']] = re.compile(regex)
     
     log_files[log['_id']] = open(log['path'], 'r')
