@@ -65,13 +65,12 @@ class CaptainsLog:
                 
         for f in facets:
             if f['name'] == 'datetime':
-                # TODO: get counts
-                f['values'] = [{ '_id': 'Today', 'value': { 'count': 0 } }, { '_id': 'Yesterday', 'value': { 'count': 0 } }]
+                # Fake out a mapreduce response for ease of display
+                f['values'] = [{ '_id': 'Today', 'value': { 'count': None } }, { '_id': 'Yesterday', 'value': { 'count': None } }]
             else:
                 f['values'] = self.apache_access_collection.map_reduce(count_map % f['name'], count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
             
         events = self.apache_access_collection.find(q)
-        total_events = events.count()
         # TODO: make rows-per-page configurable
         # NB: natural sort order is correct as datetime is always the 1st indexed column
         events = events.skip(int(page) * 20).limit(20)
@@ -80,7 +79,6 @@ class CaptainsLog:
     
         return t.render(
             facets=facets,
-            total_events=total_events,
             events=events,
             page=page,
             )

@@ -14,7 +14,7 @@
         <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if not facet['selected'] or facet['selected'] == 'All' else '' }' title='All'>All</a></li>
         % endif
 		% for value in facet['values']:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if facet['selected'] == value['_id'] else '' }' title='${ value['_id'] }'>${ value['_id'] }</a> (${ int(value['value']['count']) })</li>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if facet['selected'] == value['_id'] else '' }' title='${ value['_id'] }'>${ value['_id'] }</a>${ ' (' + str(int(value['value']['count'])) + ')' if value['value']['count'] else '' }</li>
         % endfor
     </ul>
     % endfor
@@ -57,7 +57,7 @@
         % if int(page) > 0:
         <a href="javascript:update_view(${ int(page) - 1 })">Previous</a>
         % endif
-        % if (int(page) + 1) * 20 < total_events:
+        % if (int(page) + 1) * 20 < events.count():
         <a href="javascript:update_view(${ int(page) + 1 })">Next</a>
         % endif
     </div>
