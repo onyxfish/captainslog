@@ -23,16 +23,21 @@ apache_access_collection.ensure_index([
 log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
 
 # TODO: make configurable
-log_paths = ['/var/log/apache2/access_log']
+log_config = {
+    # '/Users/sk/src/captainslog/app1/apps.access.log': 'NCSA',
+    # '/Users/sk/src/captainslog/app1/Medill.access.log': 'NCSA',
+    '/Users/sk/src/captainslog/app1/homicides.access.log': '\[?%h\]? %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %I %O'
+}
 
 # TODO: load regexes dynamically from config
-CLF_REGEX = re.compile(logformat.get_format_regex('CLF'))
+# CLF_REGEX = re.compile(logformat.get_format_regex('NCSA'))
 
 logs = []
+regexes = {}
 log_files  = {}
 
-for path in log_paths:
-    log = log_collection.find_one({'path':path})
+for path, format in log_config.items():
+    log = log_collection.find_one({'path': path})
     
     if not log:
         log = {
@@ -42,6 +47,10 @@ for path in log_paths:
         }
         
         log['_id'] = log_collection.insert(log)
+    
+    regex = logformat.get_format_regex(format)
+    print regex
+    regexes[log['_id']] = re.compile(regex)
     
     log_files[log['_id']] = open(log['path'], 'r')
     log_files[log['_id']].seek(log['last_byte'])
@@ -55,7 +64,8 @@ while 1:
         line = f.readline()
     
         while line:
-            match = CLF_REGEX.match(line)
+            print line
+            match = regexes[log['_id']].match(line)
             doc = match.groupdict()
 
             if 'datetime' in doc:
