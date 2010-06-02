@@ -7,7 +7,8 @@ LOG_COLLECTION = 'logs'
 # What logs should be parsed/tracked for analysis?
 USER_LOGS = [
     # (path, type, format)
-    ('/var/log/apache2/access_log', 'apache_access', 'CLF')
+    ('/var/log/apache2/access_log', 'apache_access', 'CLF'),
+    ('/Users/sk/src/captainslog/app1/apps.access.log', 'apache_access', 'NCSA'),
 ]
 
 # What columns should be faceted for drill-down navigation?

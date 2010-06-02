@@ -13,33 +13,25 @@ db = mongo[settings.MONGO_DB]
 apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
 log_collection = db[settings.LOG_COLLECTION]
 
+# Create indexes for logs collection
+log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
+
+# Create indexes for facets on Apache access collection
 for column in settings.FACET_COLUMNS:
     if column != 'datetime':
         apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), (column, pymongo.ASCENDING)])
-
-log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
-
-# TODO: make configurable
-log_config = {
-    '/Users/sk/src/captainslog/app1/apps.access.log': 'NCSA',
-    # '/Users/sk/src/captainslog/app1/Medill.access.log': 'NCSA',
-    # '/Users/sk/src/captainslog/app1/homicides.access.log': '\[?%h\]? %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\" %I %O'
-}
-
-# TODO: load regexes dynamically from config
-# CLF_REGEX = re.compile(logformat.get_format_regex('NCSA'))
 
 logs = []
 regexes = {}
 log_files  = {}
 
-for path, format in log_config.items():
+for path, logtype, format in settings.USER_LOGS:
     log = log_collection.find_one({'path': path})
     
     if not log:
         log = {
             'path': path,
-            'type': 'apache_access',
+            'type': logtype,
             'last_byte': 0,
         }
         
