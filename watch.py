@@ -13,12 +13,11 @@ db = mongo[settings.MONGO_DB]
 apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
 log_collection = db[settings.LOG_COLLECTION]
 
-apache_access_collection.ensure_index([
-    ('host', pymongo.ASCENDING),
-    ('datetime', pymongo.DESCENDING),
-    ('path', pymongo.ASCENDING), 
-    ('statuscode', pymongo.ASCENDING)
-]);
+apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('source', pymongo.ASCENDING)])
+apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('host', pymongo.ASCENDING)])
+apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('path', pymongo.ASCENDING)])
+apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('statuscode', pymongo.ASCENDING)])
+apache_access_collection.ensure_index([('datetime', pymongo.DESCENDING), ('source', pymongo.ASCENDING)])
 
 log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
 
