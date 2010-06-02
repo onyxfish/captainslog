@@ -35,7 +35,7 @@ class CaptainsLog:
         self.templates = TemplateLookup(directories=['templates'], module_directory='/tmp/mako_modules')
     
     @cherrypy.expose
-    def index(self, source='All', when='Today', host='All', path='All', statuscode='All', page='0', sort='datetime', sortdir='1'):
+    def index(self, source='All', when='Today', page='0', sort='datetime', sortdir='1', **kwargs):
         q = {}
 
         if source == 'All':
@@ -46,35 +46,32 @@ class CaptainsLog:
         if when == 'Today':
             today = datetime.combine(date.today(), time())
             q['datetime'] = { '$gt': today }
-        else:
-            # TODO
-            pass
-
-        if host == 'All':
-            pass
-        else:
-            q['host'] = host
-
-        if path == 'All':
-            pass
-        else:
-            q['path'] = path
-
-        if statuscode == 'All':
-            pass
-        else:
-            q['statuscode'] = statuscode
+        elif when == 'Yesterday':
+            today = datetime.combine(date.today(), time())
+            yesterday = today - timedelta(1)
+            q['datetime'] = { '$gt': yesterday, '$lt': today }
+        
+        facets = []
+        
+        for column in settings.FACET_COLUMNS:
+            f = { 'name': column, 'label': column.capitalize() }
+            if column not in kwargs or kwargs[column] == 'All':
+                f['selected'] = 'All'
+            else:
+                q[column] = kwargs[column]
+                f['selected'] = kwargs[column]
+                
+            facets.append(f)
+                
+        for f in facets:
+            f['values'] = self.apache_access_collection.map_reduce(count_map % f['name'], count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
             
         events = self.apache_access_collection.find(q)
-        whens = ['Today', 'This Week', 'This Month', 'This Year']
+        whens = ['Today', 'Yesterday']
         sources = self.apache_access_collection.map_reduce(count_map % 'source', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
-        hosts = self.apache_access_collection.map_reduce(count_map % 'host', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
-        paths = self.apache_access_collection.map_reduce(count_map % 'path', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
-        statuscodes = self.apache_access_collection.map_reduce(count_map % 'statuscode', count_reduce, query=q).find().sort([('value.count', pymongo.DESCENDING)])
         total_events = events.count()
+        # TODO: make rows/page configurable
         events = events.skip(int(page) * 20).limit(20).sort([(sort, int(sortdir))]);
-        
-        print hosts
         
         t = self.templates.get_template('index.html')
     
@@ -83,12 +80,7 @@ class CaptainsLog:
             selected_source=source,
             whens=whens,
             selected_when=when,
-            hosts=hosts,
-            selected_host=host,
-            paths=paths,
-            selected_path=path,
-            statuscodes=statuscodes,
-            selected_statuscode=statuscode,
+            facets=facets,
             total_events=total_events,
             events=events,
             page=page,

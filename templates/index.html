@@ -16,35 +16,20 @@
     
     Date range:
     <ul name='when'>
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == 'All' else '' }" title='All'>All</a></li>
         % for when in whens:
         <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_when == when else '' }" title='${ when }'>${ when }</a></li>
         % endfor
     </ul>
     
-    Host:
-    <ul name='host'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_host == 'All' else '' }' title='All'>All</a></li>
-        % for host in hosts:
-        <li><a href="javascript:facet_clicked();" class="facet ${ 'selected' if selected_host == host['_id'] else '' }" title='${ host['_id'] }'>${ host['_id'] }</a> (${ int(host['value']['count']) })</li>
+    % for facet in facets:
+    ${ facet['label'] }
+    <ul name='${ facet['name'] }'>
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if not facet['selected'] or facet['selected'] == 'All' else '' }' title='All'>All</a></li>
+        % for value in facet['values']:
+        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if facet['selected'] == value['_id'] else '' }' title='${ value['_id'] }'>${ value['_id'] }</a> (${ int(value['value']['count']) })</li>
         % endfor
     </ul>
-    
-    Path:
-    <ul name='path'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == 'All' else '' }' title='All'>All</a></li>
-        % for path in paths:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_path == path['_id'] else '' }' title='${ path['_id'] }'>${ path['_id'] }</a> (${ int(path['value']['count']) })</li>
-        % endfor
-    </ul>
-    
-    Status Code:
-    <ul name='statuscode'>
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == 'All' else '' }' title='All'>All</a></li>
-        % for statuscode in statuscodes:
-        <li><a href="javascript:facet_clicked();" class='facet ${ 'selected' if selected_statuscode == statuscode['_id'] else '' }' title='${ statuscode['_id'] }'>${ statuscode['_id'] }</a> (${ int(statuscode['value']['count']) })</li>
-        % endfor
-    </ul>
+    % endfor
     </div>
     
     <div id="content" class="grid_10">
@@ -94,16 +79,15 @@
     <link rel="stylesheet" type="text/css" href="assets/960.css" />
     <link rel="stylesheet" type="text/css" href="assets/text.css" />
     <link rel="stylesheet" type="text/css" href="assets/captainslog.css" />
-    <!-- <link rel="stylesheet" type="text/css" href="assets/tablesorter/themes/blue/style.css" /> -->
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
     <script type='text/javascript' src='assets/tablesorter/jquery.tablesorter.min.js'></script>
     <script type='text/javascript'>
     var q = {
         'source': '${ selected_source }',
+        % for facet in facets:
+        '${ facet['name'] }': '${ facet['selected'] }',
+        % endfor
         'when': '${ selected_when }',
-        'host': '${ selected_host }',
-        'path': '${ selected_path }',
-        'statuscode': '${ selected_statuscode }'
         };
         
     function facet_clicked() {    
