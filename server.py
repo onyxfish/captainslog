@@ -25,12 +25,6 @@ function(key, values) {
 }
 '''
 
-FACET_COLUMNS = [
-    'host',
-    # 'path',
-    'statuscode',
-]
-
 class CaptainsLog:
     def __init__(self):
         self.mongo = pymongo.Connection()
@@ -59,7 +53,7 @@ class CaptainsLog:
         
         facets = []
         
-        for column in FACET_COLUMNS:
+        for column in settings.FACET_COLUMNS:
             f = { 'name': column, 'label': column.capitalize() }
             if column not in kwargs or kwargs[column] == 'All':
                 f['selected'] = 'All'
