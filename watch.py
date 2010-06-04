@@ -8,10 +8,14 @@ import pymongo
 import logformat
 import settings
 
+print 'Connecting to database.'
+
 mongo = pymongo.Connection()
 db = mongo[settings.MONGO_DB]
 apache_access_collection = db[settings.APACHE_ACCESS_COLLECTION]
 log_collection = db[settings.LOG_COLLECTION]
+
+print 'Verifying indices.'
 
 # Create indexes for logs collection
 log_collection.ensure_index([('path', pymongo.ASCENDING)], unique=True);
@@ -24,6 +28,8 @@ for column in settings.FACET_COLUMNS:
 logs = []
 regexes = {}
 log_files  = {}
+
+print 'Preparing to parse logs.'
 
 for path, logtype, format in settings.USER_LOGS:
     log = log_collection.find_one({'path': path})
@@ -44,6 +50,8 @@ for path, logtype, format in settings.USER_LOGS:
     log_files[log['_id']].seek(log['last_byte'])
     
     logs.append(log)
+
+print 'Scanning for new log entries...'
 
 while 1:
     for log in logs:

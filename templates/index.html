@@ -1,5 +1,10 @@
 <head>
     <title>Captain's Log</title>
+    
+    <link rel="stylesheet" type="text/css" href="assets/reset.css" />
+    <link rel="stylesheet" type="text/css" href="assets/960.css" />
+    <link rel="stylesheet" type="text/css" href="assets/text.css" />
+    <link rel="stylesheet" type="text/css" href="assets/captainslog.css" />
 </head>
 <body>
     <div id='wrapper' class="container_12">
@@ -7,7 +12,7 @@
     
     <div id="rail" class="grid_2">
     % for facet in facets:
-    ${ facet['label'] }
+    <strong>${ facet['label'] }</strong>
     <ul name='${ facet['name'] }'>
 		## Special casing for datetime column
 		% if facet['name'] != 'datetime':
@@ -24,51 +29,40 @@
         <table id="event-table">
         <thead>
         <tr>
-            <th>Source<a/></th>
-            <th>Host</th>
-            <th>Remote Log</th>
-            <th>Auth User</th>
-            <th>Datetime</th>
-            <th>Verb</th>
-            <th>Path</th>
-            <th>Protocol</th>
-            <th>Statuscode</th>
-            <th>Bytes</th>
+            % for column in settings.DISPLAY_COLUMNS:
+            <th>${ column.capitalize() }<a/></th>
+            % endfor
         </tr>
         </thead>
         <tbody>
         % for event in events:
         <tr>
-            <td>${ event['source'] }</td>
-            <td>${ event['host'] }</td>
-            <td>${ event['remote_log'] }</td>
-            <td>${ event['auth_user'] }</td>
-            <td>${ event['datetime'] }</td>
-            <td>${ event['verb'] }</td>
-            <td>${ event['path'] }</td>
-            <td>${ event['protocol'] }</td>
-            <td>${ event['statuscode'] }</td>
-            <td>${ event['bytes'] }</td>
+            % for column in settings.DISPLAY_COLUMNS:
+            <td>${ event[column] if column in event else '' }<a/></td>
+            % endfor
         </tr>
         % endfor
         </tbody>
         </table>
         
-        % if int(page) > 0:
-        <a href="javascript:update_view(${ int(page) - 1 })">Previous</a>
+        <div id="pager">
+        % if page > 1:
+        <a href="javascript:update_view(${ page - 1 })">&lt;&lt;</a>
         % endif
-        % if (int(page) + 1) * 20 < events.count():
-        <a href="javascript:update_view(${ int(page) + 1 })">Next</a>
+        % for i in range(1, page):
+        <a href="javascript:update_view(${ i })">${ i }</a>
+        % endfor
+        <strong>${ page }</strong>
+        % for i in range(page + 1, page_count + 2):
+        <a href="javascript:update_view(${ i })">${ i }</a>
+        % endfor
+        % if page < page_count + 1:
+        <a href="javascript:update_view(${ page + 1 })">&gt;&gt;</a>
         % endif
+        </div>
     </div>
-    </body>
-
-    <link rel="stylesheet" type="text/css" href="assets/reset.css" />
-    <link rel="stylesheet" type="text/css" href="assets/960.css" />
-    <link rel="stylesheet" type="text/css" href="assets/text.css" />
-    <link rel="stylesheet" type="text/css" href="assets/captainslog.css" />
+    
     <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
-    <script type='text/javascript' src='assets/tablesorter/jquery.tablesorter.min.js'></script>
     <script type='text/javascript'>
     var q = {
         % for facet in facets:

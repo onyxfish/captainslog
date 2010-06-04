@@ -1,11 +1,9 @@
 import pymongo
 
-MONGO_DB = 'captainslog'
-APACHE_ACCESS_COLLECTION = 'apache_access'
-LOG_COLLECTION = 'logs'
+import settings
 
 mongo = pymongo.Connection()
-db = mongo[MONGO_DB]
-db.drop_collection(APACHE_ACCESS_COLLECTION)
-db.drop_collection(LOG_COLLECTION)
-mongo.drop_database(MONGO_DB)
+db = mongo[settings.MONGO_DB]
+db.drop_collection(settings.APACHE_ACCESS_COLLECTION)
+db.drop_collection(settings.LOG_COLLECTION)
+mongo.drop_database(settings.MONGO_DB)
