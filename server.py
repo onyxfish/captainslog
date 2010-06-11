@@ -74,10 +74,18 @@ class CaptainsLog:
         # TODO: make rows-per-page configurable
         # NB: natural sort order is correct as datetime is always the 1st indexed column
         event_count = events.count()
-        page_count = (event_count / 20)
         page = int(page)
-        events = events.skip((page - 1) * 20).limit(20)
         
+        if event_count > 0:
+            events = events.skip((page - 1) * 20).limit(20)
+            page_count = (event_count / 20)
+        else:
+            page_count = 1
+            
+        print event_count
+        print page_count
+        print page
+            
         t = self.templates.get_template('index.html')
     
         return t.render(

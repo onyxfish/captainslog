@@ -53,10 +53,10 @@
         <a href="javascript:update_view(${ i })">${ i }</a>
         % endfor
         <strong>${ page }</strong>
-        % for i in range(page + 1, page_count + 2):
+        % for i in range(page + 1, page_count + 1):
         <a href="javascript:update_view(${ i })">${ i }</a>
         % endfor
-        % if page < page_count + 1:
+        % if page < page_count:
         <a href="javascript:update_view(${ page + 1 })">&gt;&gt;</a>
         % endif
         </div>
@@ -80,7 +80,7 @@
     
     function update_view(page) {
         if (!page) {
-            page = 0;
+            page = 1;
         }
         
         params = new Array();
