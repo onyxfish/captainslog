@@ -1,4 +1,5 @@
-div#rail {overflow:hidden;}
+#rail {overflow:hidden;}
 a.facet.selected {background-color:red;}
 
-div#content {}
+#content #event-table {width:100%; text-align:left;}
+#pager {float:right;}
